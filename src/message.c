@@ -1399,6 +1399,12 @@ int otrl_message_receiving(OtrlUserState us, const OtrlMessageAppOps *ops,
 		     * don't try sending anything else to him. */
 		    if (otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED)) {
 			otrl_context_force_finished(context);
+			if (ops->handle_msg_event) {
+			    ops->handle_msg_event(opdata,
+				    OTRL_MSGEVENT_CONNECTION_ENDED,
+				    context, NULL,
+				    gcry_error(GPG_ERR_NO_ERROR));
+			}
 		    }
 
 		    /* If the other side told us to use the current
